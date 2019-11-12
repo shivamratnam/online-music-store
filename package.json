@@ -1,0 +1,29 @@
+{
+  "name": "online-music-store",
+  "version": "1.0.0",
+  "description": "Online Music Store App Using NodeJs (Express) & EJS",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shivamratnam/nodejs-projects.git"
+  },
+  "keywords": [
+    "NodeJs",
+    "EJS",
+    "Express"
+  ],
+  "author": "Shivamratnam Tiwari",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Shivamratnam/nodejs-projects/issues"
+  },
+  "homepage": "https://github.com/Shivamratnam/nodejs-projects#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.7.10"
+  }
+}
