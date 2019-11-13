@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title><%= title %></title>
+    <!-- Bootstrap CDN -->
+    <%- include('../shared/cdn') %>
+    <!-- Bootstrap CDN -->
+</head>
+<body>
+    <!-- Header -->
+    <%- include('../shared/header') %>
+    <!-- Header -->
+
+    <!-- Body -->
+    <div class="container">
+        <table class="table table-hover">
+            <tr>
+                <th>Sr. No.</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+            <tr>
+                <td>#1</td>
+                <td>Recorder Mic</td>
+                <td>3499 Rs.</td>
+                <td>25/12/2019</td>
+                <td class="text-success">Purchased</td>
+            </tr>
+            <tr>
+                <td>#2</td>
+                <td>Guitar</td>
+                <td>5950 Rs.</td>
+                <td>20/12/2019</td>
+                <td class="text-success">Purchased</td>
+            </tr>
+        </table>
+    </div>
+    <!-- Body -->
+
+    <!-- Footer -->
+    <%- include('../shared/footer') %>
+    <!-- Footer -->
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title><%= title %></title>
+    <!-- Bootstrap CDN -->
+    <%- include('../shared/cdn') %>
+    <!-- Bootstrap CDN -->
+    <style>
+        input{
+            min-height: 45px;
+        }
+        .card{
+            max-width: 500px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card text-center mx-auto mt-3">
+            <h1 class="text-center">Sign up</h1>
+            <div class="card-body">
+                <form action="/user/signup" method="POST">
+                    <div class="row">
+                        <div class="col col-12">
+                            <input type="text" name="username" id="uname" placeholder="Full Name" class="w-100 mb-1" required>
+                        </div>
+                        <div class="col col-12">
+                            <input type="email" name="email" id="email" placeholder="Email" class="w-100 pb-2 mb-1" required>
+                        </div>
+                        <div class="col col-12">
+                                <input type="password" name="password" id="pwd" placeholder="Password" class="w-100 pb-2 mb-1" required>
+                        </div>
+                        <div class="col col-12">
+                            <input type="password" name="confpassword" id="confpwd" placeholder="Confirm Password" class="w-100 pb-2 mb-3" required>
+                        </div>
+                        <div class="col col-12">
+                            <input type="submit" value="Register" class="btn btn-success w-100">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                Already have an account. <a href="/user/login">Login</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

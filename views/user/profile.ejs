@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title><%= title %></title>
+    <!-- Bootstrap CDN -->
+    <%- include('../shared/cdn') %>
+    <!-- Bootstrap CDN -->
+</head>
+<body>
+    <!-- Header -->
+    <%- include('../shared/header') %>
+    <!-- Header -->
+
+    <!-- Body -->
+    <div class="container">
+        <form action="/user/update" method="post">
+            <table class="table">
+                <tr>
+                    <td>Username</td>
+                    <td>
+                        <input type="text" name="username" id="uname" value="abc">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>
+                        <input type="email" name="email" id="email" value="abc@gmail.com">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Gender</td>
+                    <td>
+                        <select name="gender" id="gen">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </td>
+                </tr>
+                
+            </table>
+        </form>
+    </div>
+    <!-- Body -->
+
+    <!-- Footer -->
+    <%- include('../shared/footer') %>
+    <!-- Footer -->
+</body>
+</html>
