@@ -5,6 +5,12 @@ const bodyParser = require('body-parser');
 const dbConfig = require('./database/db.config');
 const homeRoute = require('./routes/home.route');
 const userRoute = require('./routes/users.route');
+const flash = require('connect-flash');
+const session = require('express-session');
+const passport = require('passport');
+
+// Passport config
+require('./authentication/passport')(passport);
 
 // Init app
 const app = express();
@@ -17,6 +23,27 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 // create application/x-www-form-urlencoded parser
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// Express session
+app.use(session({
+    secret: 'fReaky woRld',
+    resave: true,
+    saveUninitialized: true
+}));
+
+// Passport Middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Connect Flash
+app.use(flash());
+
+// Global Vars
+app.use((req, res, next) => {
+    res.locals.success_msg = req.flash('success_msg');
+    res.locals.error_msg = req.flash('error_msg');
+    next();
+});
 
 // Route paths
 app.use('/', homeRoute);

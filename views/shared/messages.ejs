@@ -1,0 +1,7 @@
+<% if(typeof errors != 'undefined') { %>
+    <% errors.forEach(err => { %>
+        <div class="alert alert-danger alert-dismissible fade show mb-1" role="alert">
+            <%= err.msg %>
+        </div>
+    <% }); %>
+<% } %>

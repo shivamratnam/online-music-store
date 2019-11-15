@@ -16,29 +16,32 @@
 
     <!-- Body -->
     <div class="container">
-        <table class="table table-hover">
-            <tr>
-                <th>Sr. No.</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Date</th>
-                <th>Status</th>
-            </tr>
-            <tr>
-                <td>#1</td>
-                <td>Recorder Mic</td>
-                <td>3499 Rs.</td>
-                <td>25/12/2019</td>
-                <td class="text-success">Purchased</td>
-            </tr>
-            <tr>
-                <td>#2</td>
-                <td>Guitar</td>
-                <td>5950 Rs.</td>
-                <td>20/12/2019</td>
-                <td class="text-success">Purchased</td>
-            </tr>
-        </table>
+            <% if(orders && orders.length > 0) { %>
+                <table class="table table-hover">
+                    <tr>
+                        <th>Sr. No.</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                    <% var len = orders.length; %>
+                    <% for(var i = 0; i < len; i++) { %>
+                        <tr>
+                            <td>#<%= i+1 %></td>
+                            <td><%= orders[i].prodName %></td>
+                            <td><%= orders[i].price %> Rs.</td>
+                            <td><%= orders[i].purchaseDate %></td>
+                            <td class="text-success">Purchased</td>
+                        </tr>
+                    <% } %>
+                </table>
+            <% } else { %>
+                <div class="text-center mt-5">
+                    <strong class="text-info">You have not purchased any item yet.</strong>
+                </div>
+            <% } %>
+        
     </div>
     <!-- Body -->
 

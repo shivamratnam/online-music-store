@@ -10,10 +10,46 @@
     <!-- Bootstrap CDN -->
 </head>
 <body>
-    
-    <div class="container">
-        Liked Items
-    </div>
+    <!-- Header -->
+    <%- include('../shared/header') %>
+    <!-- Header -->
 
+    <!-- Body -->
+    <div class="container">
+            <% if(lists && lists.length > 0) { %>
+                <table class="table text-center">
+                    <tr>
+                        <th>Sr. No.</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th colspan="2">Action</th>
+                    </tr>
+                    <% var len = lists.length; %>
+                    <% for(var i = 0; i < len; i++) { %>
+                        <tr>
+                            <td>#<%= i+1 %></td>
+                            <td><%= lists[i].prodName %></td>
+                            <td><%= lists[i].price %> Rs.</td>
+                            <td>
+                                <a href="/details" class="btn btn-info">View Details</a>
+                            </td>
+                            <td>
+                                <a href="/user/mylist/<%= lists[i]._id %>" class="btn btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    <% } %>
+                </table>
+            <% } else { %>
+                <div class="text-center mt-5">
+                    <strong class="text-info">You have not liked any item.</strong>
+                </div>
+            <% } %>
+        
+    </div>
+    <!-- Body -->
+
+    <!-- Footer -->
+    <%- include('../shared/footer') %>
+    <!-- Footer -->
 </body>
 </html>

@@ -16,33 +16,51 @@
 
     <!-- Body -->
     <div class="container">
-        <form action="/user/update" method="post">
+        <!-- <form action="/user/update" method="post"> -->
             <table class="table">
                 <tr>
-                    <td>Username</td>
+                    <td>Name</td>
                     <td>
-                        <input type="text" name="username" id="uname" value="abc">
+                        <label for="username"><%= profile.name %></label>
+                            <!-- <input type="text" name="username" id="uname" value="abc"> -->
+                            <!-- <input type ="text" name="username" id="unameDisabled" value="abc" disabled="disabled"> -->
                     </td>
+                    <!-- <td>
+                        <button class="btn btn-info" id="nameBtn" onclick="update('unameDisabled', 'nameBtn')">Update</button>
+                    </td> -->
                 </tr>
                 <tr>
                     <td>Email</td>
                     <td>
-                        <input type="email" name="email" id="email" value="abc@gmail.com">
+                        <label for="email"><%= profile.email %></label>
+                        <!-- <input type="email" name="email" id="email" value="abc@gmail.com"> -->
                     </td>
                 </tr>
                 <tr>
                     <td>Gender</td>
                     <td>
-                        <select name="gender" id="gen">
+                        <label for="gender"><%= profile.gender %></label>
+                        <!-- <select name="gender" id="gen">
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                             <option value="Other">Other</option>
-                        </select>
+                        </select> -->
                     </td>
                 </tr>
-                
             </table>
-        </form>
+        <!-- </form> -->
+        <script>
+            function element(id){
+                return document.getElementById(id);
+            }
+            function update(id, btnId){
+                field = element(id);
+                btn = element(btnId);
+                field.removeAttribute('disabled', 'disabled');
+                btn.textContent = 'Save';
+
+            }
+        </script>
     </div>
     <!-- Body -->
 
