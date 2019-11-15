@@ -1,0 +1,48 @@
+ [
+    {
+        "prodName": "Sample & Multi Pad",
+        "info": "Multi-Pad with SD Card Slot",
+        "imgPath": "images/drumpad.jpg",
+        "price": 11815,
+        "details": {
+            "Weight": "1.41 Kg",
+            "Dimension": "28.4 x 6.5 x 26.9 cm",
+            "Batteries": "No",
+            "Model_Number": "Sample Pad",
+            "Colour": "Black",
+            "Size": "Standard",
+            "Battery_Type": "NA" 
+        }
+    },
+    {
+        "prodName": "Bamboo Flute(Bansuri)",
+        "info": "Bamboo Flute Musical Instrument",
+        "imgPath": "images/flute.jpg",
+        "price": 1500,
+        "details": {
+            "Weight": "99.8 g",
+            "Dimension": "41 x 4 x 3 cm",
+            "Batteries": "No",
+            "Model_Number": "E Medium",
+            "Colour": "Wooden",
+            "Size": "Standard",
+            "Battery_Type": "NA"
+        }
+    },
+    {
+        "prodName": "Acoustic Guitar",
+        "info": "Premium quality music experience",
+        "imgPath": "images/guitar.jpg",
+        "price": 5597,
+        "details": {
+            "Weight": "2 Kg",
+            "Dimension": "100 x 43 x 17 cm",
+            "Batteries": "No",
+            "Model_Number": "KAD-A-311",
+            "Colour": "Wooden",
+            "Size": "Standard",
+            "Battery_Type": "NA"
+        }
+    }
+
+]

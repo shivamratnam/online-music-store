@@ -1,5 +1,6 @@
 const UserModel = require('../models/user.model');
 const OrdersModel = require('../models/orders.model');
+const ProductModel = require('../models/products.model');
 const LikedModel = require('../models/likedItems.model');
 const passport = require('passport');
 const bcrypt = require('bcryptjs');
@@ -16,8 +17,9 @@ exports.login_get = (req, res) => {
     });
 }
 exports.login_post = (req, res, next) => {
+    let successUrl = req.session.redirectUrl;
     passport.authenticate('local', {
-        successRedirect: '/user/dashboard',
+        successRedirect: successUrl ? successUrl : '/user/dashboard',
         failureRedirect: '/user/login',
         failureFlash: true
     })(req, res, next);
@@ -112,6 +114,7 @@ exports.myList = (req, res) => {
             result.forEach(item => {
                 let list = {
                     _id: item._id,
+                    prodId: item.prodId,
                     prodName: item.prodName,
                     price: item.price
                 }
@@ -138,6 +141,25 @@ exports.delList = (req, res) => {
         res.redirect('/user/mylist');
     });
 }
+exports.addList = (req, res) => {
+    let prodId = req.params.id;
+    ProductModel.findById(prodId, (err, result) => {
+        if(err) throw err;
+        
+        let likedItem = {
+            email: req.user.email,
+            prodId: result._id,
+            prodName: result.prodName,
+            price: result.price
+        }
+        LikedModel.insertMany(likedItem, (err, result)=> {
+            if(err) throw err;
+
+            // Inserted successfully
+            res.send('Added to my list');
+        });
+    });
+}
 exports.myCart = (req, res) => {
     res.send("<h1>My Cart</h1>");
 }
@@ -162,4 +184,32 @@ exports.settings = (req, res) => {
     res.render('user/settings', {
         title: 'My Settings'
     });
+}
+
+exports.buyProd = (req, res) => {
+    let id = req.params.id
+    console.log(id);
+    ProductModel.findById(id, (err, result) => {
+        if(err) throw err;
+        
+        let date = new Date();
+        console.log(date);
+        let order = {
+            email: req.user.email,
+            prodId: id,
+            prodName: result.prodName,
+            price: result.price,
+            purchaseDate: date
+        }
+        OrdersModel.insertMany(order, (err, result) => {
+            if(err) throw err;
+
+            //Record Inserted
+            res.send('Product purchased successfully');
+        });
+    });
+}
+exports.logout = (req, res) => {
+    req.logout();
+    res.redirect('/');
 }

@@ -15,8 +15,38 @@
     <!-- Header -->
 
     <!-- Body -->
-    <div class="container-fluid">
-        <h1>Home Page</h1>
+    <div class="container">
+        <% let length = products.length; %>
+        <% for(let i = 0; i < length; i++) { %>
+            <% if( i==0 ) { %>
+                <div class="row">
+            <% } %>
+            <% if( (i) % 3 == 0 && i != 0 ) { %>
+                </div>
+                <div class="row">
+            <% } %>
+
+            <div class="col col-sm-12 col-md-6 col-lg-4">
+                <div class="card mt-2" style="width: 18rem;">
+                    <img src="/<%= products[i].imgPath %>" height="220px" class="card-img-top" alt="Image not loaded">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <h5 class="card-title"><%= products[i].prodName %></h5>
+                            <a href="/user/mylist/add/<%= products[i]._id %>" class="ml-auto">
+                                <i class="fa fa-heart-o" style="font-size:25px;color:red;" aria-hidden="true"></i>
+                            </a> 
+                        </div>
+                        <p class="card-text"><%= products[i].info %></p>
+                        <a href="/details/<%= products[i]._id %>" class="btn btn-outline-warning">View details</a>
+                        <a href="#" class="btn btn-outline-success">Add to cart</a>
+                    </div>
+                </div>
+            </div>
+
+            <% if( i == length-1 ) { %>
+            </div>
+            <% } %>
+        <% } %>
     </div>
     <!-- Body -->
 

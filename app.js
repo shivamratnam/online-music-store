@@ -45,6 +45,9 @@ app.use((req, res, next) => {
     next();
 });
 
+// Static files middleware
+app.use( express.static( "public" ) );
+
 // Route paths
 app.use('/', homeRoute);
 app.use('/user', userRoute);

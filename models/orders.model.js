@@ -7,6 +7,10 @@ var OrderSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    prodId: {
+        type: String,
+        required: true
+    },
     prodName: {
         type: String,
         required: true

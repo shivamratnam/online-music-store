@@ -5,7 +5,7 @@ const homeController = require('../controllers/home.controller');
 const route = express.Router();
 
 route.get('/', homeController.home_page);
-route.get('/details', homeController.product_details);
+route.get('/details/:id', homeController.product_details);
 
 
 module.exports = route;

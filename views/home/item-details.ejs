@@ -8,6 +8,11 @@
     <!-- Bootstrap CDN -->
     <%- include('../shared/cdn') %>
     <!-- Bootstrap CDN -->
+    <style>
+        .card{
+            max-width: 700px;
+        }
+    </style>
 </head>
 <body>
     <!-- Header -->
@@ -15,8 +20,33 @@
     <!-- Header -->
 
     <!-- Body -->
-    <div class="container-fluid">
-        <h1>Item Details</h1>
+    <div class="container">
+        <div class="card my-3 mx-auto">
+            <img src="/<%= product.imgPath %>" class="card-img-top" height="350px;" alt="Image not loaded">
+            <div class="card-body">
+                <h5 class="card-title"><%= product.prodName %></h5>
+                <strong class="text-success">Price: <%= product.price %> Rs.</strong>
+                <hr/>
+                <strong class="text-warning">Information:</strong>
+                <p class="card-text text-info">
+                    <%= product.info %>
+                </p>
+                <strong class="text-warning">Product Details:</strong>
+                <table class="table">
+                <% for(const [key, value] of Object.entries(product.details)) { %>
+                    <tr>
+                        <% if(key !== '$init') { %>
+                        <th> <%= key %> </th>
+                        <td> <%= value %> </td>
+                        <% } %>
+                    </tr>
+                <% } %>
+                </table>
+            </div>
+            <div class="card-footer text-center">
+                <a href="/user/buy/<%= product._id %>" class="btn btn-outline-success w-50">Buy Now</a>
+            </div>
+        </div>
     </div>
     <!-- Body -->
 

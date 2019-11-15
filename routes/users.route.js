@@ -12,11 +12,16 @@ route.get('/profile', ensureAuthenticated, userController.myProfile);
 route.get('/cart', ensureAuthenticated, userController.myCart);
 route.get('/orders', ensureAuthenticated, userController.myOrders);
 route.get('/mylist', ensureAuthenticated, userController.myList);
-route.get('/mylist/:id', ensureAuthenticated, userController.delList);
+route.get('/mylist/delete/:id', ensureAuthenticated, userController.delList);
+route.get('/mylist/add/:id', ensureAuthenticated, userController.addList);
 route.get('/settings', ensureAuthenticated, userController.settings);
+
+route.get('/buy/:id', ensureAuthenticated, userController.buyProd);
 
 route.post('/login', userController.login_post);
 route.post('/signup', userController.signup_post);
+route.get('/logout', userController.logout);
+
 
 
 module.exports = route;
