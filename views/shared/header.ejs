@@ -1,0 +1,46 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">Musical World</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <% if( isUser ) { %>
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/user/dashboard">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/user/profile">My Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/user/orders">My Orders</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/user/mylist">Liked Items</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/user/cart">My Cart</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/user/settings">Settings</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link btn btn-outline-success mr-2" href="/user/logout">&nbsp; Logout &nbsp;</a>
+          </li>
+        </ul>
+        <% } else { %>
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link btn btn-outline-success mr-2" href="/user/login">&nbsp; login &nbsp;</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link btn btn-outline-info" href="/user/signup" >Sign up</a>
+            </li>
+          </ul>
+        <% } %>
+      </ul>
+    </div>
+  </nav>

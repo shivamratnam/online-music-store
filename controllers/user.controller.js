@@ -9,6 +9,7 @@ const  moment = require('moment');
 exports.login_get = (req, res) => {
     res.render('user/login', {
         title: 'Login',
+        isUser: false,
         errors: [{
             msg: 'ERR1'
         },{
@@ -26,7 +27,8 @@ exports.login_post = (req, res, next) => {
 }
 exports.signup_get = (req, res) => {
     res.render('user/signup', {
-        title: 'Sign up'
+        title: 'Sign up',
+        isUser: false
     });
 }
 exports.signup_post = (req, res) => {
@@ -75,7 +77,8 @@ exports.signup_post = (req, res) => {
 }
 exports.dashboard = (req, res) => {
     res.render('user/dashboard', {
-        title: 'Dashboard'
+        title: 'Dashboard',
+        isUser: true
     });
 }
 exports.myOrders = (req, res) => {
@@ -96,11 +99,13 @@ exports.myOrders = (req, res) => {
             
             res.render('user/orders', {
                 title: 'My Orders',
+                isUser: true,
                 orders: orders
             });
         } else { // No Purchased Items
             res.render('user/orders', {
                 title: 'My Orders',
+                isUser: true,
                 orders: null
             });
         }
@@ -122,11 +127,13 @@ exports.myList = (req, res) => {
             });
             res.render('user/liked-items', {
                 title: 'Liked Items',
+                isUser: true,
                 lists: lists
             });
         } else { // No Purchased Items
             res.render('user/liked-items', {
                 title: 'Liked Items',
+                isUser: true,
                 lists: null
             });
         }
@@ -161,7 +168,10 @@ exports.addList = (req, res) => {
     });
 }
 exports.myCart = (req, res) => {
-    res.send("<h1>My Cart</h1>");
+    res.render('user/my-cart', {
+        title: 'My Cart',
+        isUser: true
+    });
 }
 exports.myProfile = (req, res) => {
     UserModel.findById(req.user._id, (err, result) => {
@@ -176,13 +186,15 @@ exports.myProfile = (req, res) => {
         console.log(profile);
         res.render('user/profile', {
             title: 'My Profile',
+            isUser: true,
             profile: profile,
         });
     });
 }
 exports.settings = (req, res) => {
     res.render('user/settings', {
-        title: 'My Settings'
+        title: 'My Settings',
+        isUser: true
     });
 }
 
