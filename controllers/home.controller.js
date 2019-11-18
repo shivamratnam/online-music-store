@@ -19,7 +19,6 @@ exports.product_details = (req, res) => {
     ProductModel.findById(id, (err, result) => {
         if(err) throw err;
         
-        console.log(result);
         // Return item
         res.render('home/item-details', {
             title: 'Product Details',

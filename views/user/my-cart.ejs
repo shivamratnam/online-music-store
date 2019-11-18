@@ -16,8 +16,36 @@
 
     <!-- Body -->
     <div class="container">
-        My Cart
-    </div>
+        <% if(items && items.length > 0) { %>
+            <table class="table text-center">
+                <tr>
+                    <th>Sr. No.</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Action</th>
+                </tr>
+                <% var len = items.length; %>
+                <% for(var i = 0; i < len; i++) { %>
+                    <tr>
+                        <td>#<%= i+1 %></td>
+                        <td><%= items[i].prodName %></td>
+                        <td><%= items[i].price %> Rs.</td>
+                        <td><%= items[i].quantity %></td>
+                        <td>
+                            <a href="/user/cart/delete/<%= items[i]._id %>" class="btn btn-danger">Remove</a>
+                        </td>
+                    </tr>
+                <% } %>
+            </table>
+        <% } else { %>
+            <div class="text-center mt-5">
+                <strong class="text-info">Your cart is empty.</strong> <br/>
+                <a href="/" class="btn btn-success mt-3">Shop Now</a>
+            </div>
+        <% } %>
+    
+</div>
     <!-- Body -->
 
 </body>

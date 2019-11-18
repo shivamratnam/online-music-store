@@ -2,6 +2,7 @@ const UserModel = require('../models/user.model');
 const OrdersModel = require('../models/orders.model');
 const ProductModel = require('../models/products.model');
 const LikedModel = require('../models/likedItems.model');
+const CartModel = require('../models/mycart.model');
 const passport = require('passport');
 const bcrypt = require('bcryptjs');
 const  moment = require('moment');
@@ -19,6 +20,7 @@ exports.login_get = (req, res) => {
 }
 exports.login_post = (req, res, next) => {
     let successUrl = req.session.redirectUrl;
+    delete req.session.redirectUrl;
     passport.authenticate('local', {
         successRedirect: successUrl ? successUrl : '/user/dashboard',
         failureRedirect: '/user/login',
@@ -78,7 +80,8 @@ exports.signup_post = (req, res) => {
 exports.dashboard = (req, res) => {
     res.render('user/dashboard', {
         title: 'Dashboard',
-        isUser: true
+        isUser: true,
+        username: req.user.username
     });
 }
 exports.myOrders = (req, res) => {
@@ -168,9 +171,51 @@ exports.addList = (req, res) => {
     });
 }
 exports.myCart = (req, res) => {
-    res.render('user/my-cart', {
-        title: 'My Cart',
-        isUser: true
+    CartModel.find({email: req.user.email}, (err, cartItems) => {
+        if(err) throw err;
+        let myCart = [];
+        ProductModel.find({}, (err, prodList) => {
+            if(err) throw err;
+            let itemLen = cartItems.length;
+            let prodLen = prodList.length;
+            for(let i = 0; i < prodLen; i++){ // products
+                let quantity = 0;
+                for(let j = 0 ; j < itemLen; j++){ // cart items
+                    if(prodList[i]._id == cartItems[j].prodId){
+                        quantity++;
+                        if(quantity == 1) myCart.push(prodList[i]);
+                    }
+                }
+                prodList[i].quantity = quantity;
+            }
+            res.render('user/my-cart', {
+                title: 'My Cart',
+                isUser: true,
+                items: myCart
+            });
+        });
+    });
+}
+exports.addToCart = (req, res) => {
+    let prodId = req.params.id;
+    let query = {
+        email: req.user.email,
+        prodId: prodId
+    }
+    CartModel.insertMany(query, (err, result) => {
+        if(err) throw err;
+        
+        // Data Inserted Successfully.
+        res.redirect('/user/cart');
+    });
+}
+exports.removeFromCart = (req, res) => {
+    let prodId = req.params.id;
+    CartModel.findOneAndDelete({prodId: prodId}, (err, result) => {
+        if(err) throw err;
+
+        // Item removed
+        res.redirect('/user/cart');
     });
 }
 exports.myProfile = (req, res) => {
@@ -217,8 +262,15 @@ exports.buyProd = (req, res) => {
             if(err) throw err;
 
             //Record Inserted
-            res.send('Product purchased successfully');
+            res.redirect('/user/booked');
         });
+    });
+}
+exports.bookingConfirmation = (req, res) => {
+    res.render('user/booking-confirmation', {
+        title: 'Booking Confirmation',
+        isUser: true,
+        confirmationMsg: 'Product purchased successfully'
     });
 }
 exports.logout = (req, res) => {
