@@ -18,7 +18,7 @@ route.get('/mylist/delete/:id', ensureAuthenticated, userController.delList);
 route.get('/mylist/add/:id', ensureAuthenticated, userController.addList);
 route.get('/settings', ensureAuthenticated, userController.settings);
 
-route.get('/buy/:id', ensureAuthenticated, userController.buyProd);
+route.get('/buy/:ids', ensureAuthenticated, userController.buyProd);
 route.get('/booked', ensureAuthenticated, userController.bookingConfirmation);
 
 route.post('/login', userController.login_post);

@@ -32,9 +32,17 @@
                     <div class="card-body">
                         <div class="d-flex">
                             <h5 class="card-title"><%= products[i].prodName %></h5>
-                            <a href="/user/mylist/add/<%= products[i]._id %>" class="ml-auto">
-                                <i class="fa fa-heart-o" style="font-size:25px;color:red;" aria-hidden="true"></i>
-                            </a> 
+                            <% if(isUser) { %>
+                                <% if(products[i].liked) { %>
+                                    <a href="/user/mylist/delete/<%= products[i]._id %>" class="ml-auto">
+                                        <i class="fa fa-heart" style="font-size:25px;color:red;" aria-hidden="true"></i>
+                                    </a> 
+                                <% } else { %>
+                                    <a href="/user/mylist/add/<%= products[i]._id %>" class="ml-auto">
+                                        <i class="fa fa-heart-o" style="font-size:25px;color:red;" aria-hidden="true"></i>
+                                    </a>
+                                <% } %>
+                            <% } %>
                         </div>
                         <p class="card-text"><%= products[i].info %></p>
                         <a href="/details/<%= products[i]._id %>" class="btn btn-outline-warning">View details</a>

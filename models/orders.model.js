@@ -19,6 +19,10 @@ var OrderSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    quantity: {
+        type: Number,
+        required: true
+    },
     purchaseDate: {
         type: Date,
         required: true

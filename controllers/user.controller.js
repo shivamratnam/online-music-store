@@ -95,6 +95,7 @@ exports.myOrders = (req, res) => {
                 let order = {
                     prodName: item.prodName,
                     price: item.price,
+                    quantity: item.quantity,
                     purchaseDate: date
                 }
                 orders.push(order);
@@ -244,25 +245,57 @@ exports.settings = (req, res) => {
 }
 
 exports.buyProd = (req, res) => {
-    let id = req.params.id
-    console.log(id);
-    ProductModel.findById(id, (err, result) => {
-        if(err) throw err;
-        
-        let date = new Date();
-        console.log(date);
-        let order = {
-            email: req.user.email,
-            prodId: id,
-            prodName: result.prodName,
-            price: result.price,
-            purchaseDate: date
+    let idWithQty = req.params.ids.split(',');
+    let ids = [];
+    let idMapper = [];
+    idWithQty.forEach(item => {
+        let temp = [];
+        let temp1 = {}
+
+        // array of ids
+        temp = item.split('-');
+        ids.push(temp[0]);
+
+        // array of objects with id & quantity
+        temp1.id = temp[0];
+        temp1.quantity = parseInt(temp[1]);
+        idMapper.push(temp1);
+    });
+    let query = {
+        '_id': {
+            '$in': ids
         }
-        OrdersModel.insertMany(order, (err, result) => {
+    }
+    ProductModel.find(query, (err, result) => {
+        if(err) throw err;
+        let query = [];
+        result.forEach( product => {
+            idMapper.forEach( element => {
+                if(product._id == element.id){
+                    let order = {
+                        email: req.user.email,
+                        prodId: product._id,
+                        prodName: product.prodName,
+                        price: product.price,
+                        quantity: element.quantity,
+                        purchaseDate: new Date()
+                    }
+                    query.push(order);
+                }
+            });
+        });
+        OrdersModel.insertMany(query, (err, result) => {
             if(err) throw err;
 
-            //Record Inserted
-            res.redirect('/user/booked');
+            //remove items from the cart
+            CartModel.remove({}, (err, result) => {
+                if(err) throw err;
+
+                // Items successfully removed from the cart;
+                
+                //Record Inserted
+                res.redirect('/user/booked');
+            });
         });
     });
 }
