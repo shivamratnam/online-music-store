@@ -1,28 +1,37 @@
 const ProductModel = require('../models/products.model');
-const LikedModel = require('../models/likedItems.model');
+const UserModel = require('../models/user.model');
+const CartModel = require('../models/mycart.model');
 
 exports.home_page = (req, res) => {
     let isUser = req.user ? true : false;
     ProductModel.find({}, { strict: false }, (err, result) => {
         if(err) throw err;
         if(isUser){ // valid user
-            LikedModel.find({email: req.user.email}, (err, likedItems) => {
+            UserModel.findOne({email: req.user.email}, (err, user) => {
                 if(err) throw err;
                 
                 result.forEach(prod => {
                     prod.set('liked', false, { strict: false } );
-                    likedItems.forEach(liked => {
-                        if(prod._id == liked.prodId){
-                            prod.set('liked', true, { strict: false } );
-                        }
-                    });
+                    if(user && user.likedItems.length > 0) {
+                        user.likedItems.forEach(id => {
+                            if(prod._id == id){
+                                prod.set('liked', true, { strict: false } );
+                            }
+                        });
+                    }
                 });
-                console.log(result);
-                // Return items
-                res.render('home/home-page', {
-                    title: 'Music Store',
-                    isUser: isUser,
-                    products: result
+
+                // Get number of items in the cart
+                CartModel.find({email: req.user.email}, (err, cartItems) => {
+                    if(err) throw err;
+                    // Return items
+                    res.render('home/home-page', {
+                        title: 'Music Store',
+                        isUser: isUser,
+                        likeCount: user.likedItems ? user.likedItems.length : 0,
+                        cartCount: cartItems.length,
+                        products: result
+                    });
                 });
             });
         } else { // not a user
@@ -30,6 +39,8 @@ exports.home_page = (req, res) => {
             res.render('home/home-page', {
                 title: 'Music Store',
                 isUser: isUser,
+                likeCount: 0,
+                cartCount: 0,
                 products: result
             });
         }
@@ -41,11 +52,23 @@ exports.product_details = (req, res) => {
     ProductModel.findById(id, (err, result) => {
         if(err) throw err;
         
-        // Return item
-        res.render('home/item-details', {
-            title: 'Product Details',
-            isUser: isUser,
-            product: result
+        // Get like count
+        UserModel.find({email: req.user.email}, (err, user) => {
+            if(err) throw err;
+
+            // Get cart count
+            CartModel.find({email: req.user.email}, (err, cartItems) => {
+                if(err) throw err;
+
+                // Return item
+                res.render('home/item-details', {
+                    title: 'Product Details',
+                    isUser: isUser,
+                    likeCount: user.likedItems ? user.likedItems.length : 0,
+                    cartCount: cartItems.length,
+                    product: result
+                });
+            });
         });
     });
 }

@@ -17,10 +17,18 @@
             <a class="nav-link" href="/user/orders">My Orders</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/user/mylist">Liked Items</a>
+            <% if(likeCount > 0) { %>
+              <a class="nav-link" href="/user/mylist">Liked Items <span class="badge badge-warning"><%= likeCount %></span> </a>
+            <% } else { %>
+              <a class="nav-link" href="/user/mylist">Liked Items</a>
+            <% } %>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/user/cart">My Cart</a>
+            <% if(cartCount > 0) { %>
+              <a class="nav-link" href="/user/cart">My Cart <span class="badge badge-warning"><%= cartCount %></span> </a>
+            <% } else { %>
+              <a class="nav-link" href="/user/cart">My Cart</a>
+            <% } %>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/user/settings">Settings</a>

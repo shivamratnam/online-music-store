@@ -31,10 +31,10 @@
                             <td><%= lists[i].prodName %></td>
                             <td><%= lists[i].price %> Rs.</td>
                             <td>
-                                <a href="/details/<%= lists[i].prodId %>" class="btn btn-info">View Details</a>
+                                <a href="/details/<%= lists[i]._id %>" class="btn btn-info">View Details</a>
                             </td>
                             <td>
-                                <a href="/user/mylist/delete/<%= lists[i]._id %>" class="btn btn-danger">Delete</a>
+                                <a href="/user/mylist/delete/<%= lists[i]._id %>-.user.mylist" class="btn btn-danger">Delete</a>
                             </td>
                         </tr>
                     <% } %>

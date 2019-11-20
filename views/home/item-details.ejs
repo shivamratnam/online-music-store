@@ -44,7 +44,12 @@
                 </table>
             </div>
             <div class="card-footer text-center">
-                <a href="/user/cart/<%= product._id %>" class="btn btn-outline-success w-50">Continue to cart</a>
+                <!-- 
+                    dot(.) in href link is replaced with forward slash (/)
+                    to identify the redirect path on server
+                    (-) is used as seperator for 'id' & 'redirect path'
+                -->
+                <a href="/user/cart/<%= product._id %>-.user.cart" class="btn btn-outline-success w-50">Continue to cart</a>
             </div>
         </div>
     </div>

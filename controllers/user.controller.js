@@ -1,21 +1,16 @@
 const UserModel = require('../models/user.model');
 const OrdersModel = require('../models/orders.model');
 const ProductModel = require('../models/products.model');
-const LikedModel = require('../models/likedItems.model');
 const CartModel = require('../models/mycart.model');
 const passport = require('passport');
 const bcrypt = require('bcryptjs');
 const  moment = require('moment');
 
 exports.login_get = (req, res) => {
+    let isUser = req.user ? true : false;
     res.render('user/login', {
         title: 'Login',
-        isUser: false,
-        errors: [{
-            msg: 'ERR1'
-        },{
-            msg: 'ERR2'
-        }]
+        isUser: isUser,
     });
 }
 exports.login_post = (req, res, next) => {
@@ -28,9 +23,10 @@ exports.login_post = (req, res, next) => {
     })(req, res, next);
 }
 exports.signup_get = (req, res) => {
+    let isUser = req.user ? true : false;
     res.render('user/signup', {
         title: 'Sign up',
-        isUser: false
+        isUser: isUser
     });
 }
 exports.signup_post = (req, res) => {
@@ -78,10 +74,23 @@ exports.signup_post = (req, res) => {
     });
 }
 exports.dashboard = (req, res) => {
-    res.render('user/dashboard', {
-        title: 'Dashboard',
-        isUser: true,
-        username: req.user.username
+    // Get like count
+    UserModel.find({email: req.user.email}, (err, user) => {
+        if(err) throw err;
+
+        // Get cart count
+        CartModel.find({email: req.user.email}, (err, cartItems) => {
+            if(err) throw err;
+
+            // Send response
+            res.render('user/dashboard', {
+                title: 'User Dashboard',
+                isUser: true,
+                username: req.user.username,
+                likeCount: user.likedItems ? user.likedItems.length : 0,
+                cartCount: cartItems.length
+            });
+        });
     });
 }
 exports.myOrders = (req, res) => {
@@ -100,75 +109,122 @@ exports.myOrders = (req, res) => {
                 }
                 orders.push(order);
             });
-            
-            res.render('user/orders', {
-                title: 'My Orders',
-                isUser: true,
-                orders: orders
+            // Get like count
+            UserModel.find({email: req.user.email}, (err, user) => {
+                if(err) throw err;
+
+                // Get cart count
+                CartModel.find({email: req.user.email}, (err, cartItems) => {
+                    if(err) throw err;
+
+                    // Send response
+                    res.render('user/orders', {
+                        title: 'My Orders',
+                        isUser: true,
+                        likeCount: user.likedItems ? user.likedItems.length : 0,
+                        cartCount: cartItems.length,
+                        orders: orders
+                    });
+                });
             });
         } else { // No Purchased Items
-            res.render('user/orders', {
-                title: 'My Orders',
-                isUser: true,
-                orders: null
+            // Get like count
+            UserModel.find({email: req.user.email}, (err, user) => {
+                if(err) throw err;
+
+                // Get cart count
+                CartModel.find({email: req.user.email}, (err, cartItems) => {
+                    if(err) throw err;
+
+                    // Send response
+                    res.render('user/orders', {
+                        title: 'My Orders',
+                        isUser: true,
+                        likeCount: user.likedItems ? user.likedItems.length : 0,
+                        cartCount: cartItems.length,
+                        orders: null
+                    });
+                });
             });
         }
     });   
 }
 exports.myList = (req, res) => {
-    LikedModel.find({email: req.user.email}, (err, result) => {
+    UserModel.findOne({email: req.user.email}, (err, user) => {
         if(err) throw err;
-        if(result && result.length > 0){
-            let lists = [];
-            result.forEach(item => {
-                let list = {
-                    _id: item._id,
-                    prodId: item.prodId,
-                    prodName: item.prodName,
-                    price: item.price
-                }
-                lists.push(list);
-            });
-            res.render('user/liked-items', {
-                title: 'Liked Items',
-                isUser: true,
-                lists: lists
-            });
-        } else { // No Purchased Items
-            res.render('user/liked-items', {
-                title: 'Liked Items',
-                isUser: true,
-                lists: null
-            });
+
+        let query = {
+            _id: {
+                $in: user.likedItems
+            }
         }
+        ProductModel.find(query, (err, products) => {
+            if(err) throw err;
+            
+            // Get cart count
+            CartModel.find({email: req.user.email}, (err, cartItems) => {
+                if(err) throw err;
+
+                if(products && products.length > 0){
+                    res.render('user/liked-items', {
+                        title: 'Liked Items',
+                        isUser: true,
+                        likeCount: user.likedItems ? user.likedItems.length : 0,
+                        cartCount: cartItems.length,
+                        lists: products
+                    });
+                } else {
+                    res.render('user/liked-items', {
+                        title: 'Liked Items',
+                        isUser: true,
+                        likeCount: user.likedItems ? user.likedItems.length : 0,
+                        cartCount: cartItems.length,
+                        lists: null
+                    });
+                }
+            });
+        });        
     });
 }
 exports.delList = (req, res) => {
-    let id = req.params.id;
-    console.log(id);
-    LikedModel.findByIdAndDelete(id, (err, result) => {
-        if(err) throw err;
+    /**
+     * Format of req.params.id is ( id-path )
+     * path is seperated by dot(.) which we have to change to forward slash(/) 
+     */
+    let data = req.params.id.split('-');
+    let prodId = data[0];
+    redirectPath = data[1].replace(/[.]/g, '/');
 
-        res.redirect('/user/mylist');
+    let query = {
+        email: req.user.email
+    }
+    let udateQuery = {
+        $pull: {
+            likedItems: prodId
+        }
+    }
+    UserModel.updateOne(query, udateQuery, (err, result) => {
+        if(err) throw err;
+        
+        // Data updated
+        res.redirect(redirectPath);
     });
 }
 exports.addList = (req, res) => {
     let prodId = req.params.id;
-    ProductModel.findById(prodId, (err, result) => {
-        if(err) throw err;
-        
-        let likedItem = {
-            email: req.user.email,
-            prodId: result._id,
-            prodName: result.prodName,
-            price: result.price
+    let query = {
+        email: req.user.email
+    }
+    let updateQuery = {
+        $push: {
+            'likedItems': prodId
         }
-        LikedModel.insertMany(likedItem, (err, result)=> {
-            if(err) throw err;
+    }
+    UserModel.updateOne(query, updateQuery, (err, raw) => {
+        if(err) throw err;
 
-            // Inserted successfully
-            res.send('Added to my list');
-        });
+        // Record Updated
+        res.redirect('/');
     });
 }
 exports.myCart = (req, res) => {
@@ -189,16 +245,31 @@ exports.myCart = (req, res) => {
                 }
                 prodList[i].quantity = quantity;
             }
-            res.render('user/my-cart', {
-                title: 'My Cart',
-                isUser: true,
-                items: myCart
+            // Get like count
+            UserModel.find({email: req.user.email}, (err, user) => {
+                if(err) throw err;
+
+                // Send response
+                res.render('user/my-cart', {
+                    title: 'My Cart',
+                    isUser: true,
+                    likeCount: user.likedItems ? user.likedItems.length : 0,
+                    cartCount: cartItems.length,
+                    items: myCart
+                });
             });
         });
     });
 }
 exports.addToCart = (req, res) => {
-    let prodId = req.params.id;
+    /**
+     * Format of req.params.id is ( id-path )
+     * path is seperated by dot(.) which we have to change to forward slash(/) 
+     */
+    let data = req.params.id.split('-');
+    let prodId = data[0];
+    redirectPath = data[1].replace(/[.]/g, '/');
+
     let query = {
         email: req.user.email,
         prodId: prodId
@@ -207,7 +278,7 @@ exports.addToCart = (req, res) => {
         if(err) throw err;
         
         // Data Inserted Successfully.
-        res.redirect('/user/cart');
+        res.redirect(redirectPath);
     });
 }
 exports.removeFromCart = (req, res) => {
@@ -223,24 +294,43 @@ exports.myProfile = (req, res) => {
     UserModel.findById(req.user._id, (err, result) => {
         if(err) throw err;
         
-        // Return Profile
-        let profile = {
-            name: result.username,
-            email: result.email,
-            gender: result.gender ? result.gender : ''
-        }
-        console.log(profile);
-        res.render('user/profile', {
-            title: 'My Profile',
-            isUser: true,
-            profile: profile,
+        // Get cart count
+        CartModel.find({email: req.user.email}, (err, cartItems) => {
+            if(err) throw err;
+
+            let profile = {
+                name: result.username,
+                email: result.email,
+                gender: result.gender ? result.gender : ''
+            }
+            // Send response
+            res.render('user/profile', {
+                title: 'My Profile',
+                isUser: true,
+                likeCount: result.likedItems ? result.likedItems.length : 0,
+                cartCount: cartItems.length,
+                profile: profile,
+            });
         });
     });
 }
 exports.settings = (req, res) => {
-    res.render('user/settings', {
-        title: 'My Settings',
-        isUser: true
+    // Get like count
+    UserModel.find({email: req.user.email}, (err, user) => {
+        if(err) throw err;
+
+        // Get cart count
+        CartModel.find({email: req.user.email}, (err, cartItems) => {
+            if(err) throw err;
+
+            // Send response
+            res.render('user/settings', {
+                title: 'My Settings',
+                isUser: true,
+                likeCount: user.likedItems ? user.likedItems.length : 0,
+                cartCount: cartItems.length
+            });
+        });
     });
 }
 
@@ -300,10 +390,23 @@ exports.buyProd = (req, res) => {
     });
 }
 exports.bookingConfirmation = (req, res) => {
-    res.render('user/booking-confirmation', {
-        title: 'Booking Confirmation',
-        isUser: true,
-        confirmationMsg: 'Product purchased successfully'
+    // Get like count
+    UserModel.find({email: req.user.email}, (err, user) => {
+        if(err) throw err;
+
+        // Get cart count
+        CartModel.find({email: req.user.email}, (err, cartItems) => {
+            if(err) throw err;
+
+            // Send response
+            res.render('user/booking-confirmation', {
+                title: 'Booking Confirmation',
+                isUser: true,
+                confirmationMsg: 'Product purchased successfully',
+                likeCount: user.likedItems ? user.likedItems.length : 0,
+                cartCount: cartItems.length
+            });
+        });
     });
 }
 exports.logout = (req, res) => {

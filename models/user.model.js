@@ -16,6 +16,9 @@ var UserSchema = new mongoose.Schema({
     },
     gender: {
         type: String
+    },
+    likedItems: {
+        type: Array
     }
 });
 

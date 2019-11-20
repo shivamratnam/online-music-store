@@ -27,6 +27,10 @@ var ProductSchema = new mongoose.Schema({
         Colour: String,
         Size: String,
         Battery_Type: String
+    },
+    liked: {
+        type: Boolean,
+        required: false
     }
 });
 

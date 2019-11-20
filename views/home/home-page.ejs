@@ -25,7 +25,6 @@
                 </div>
                 <div class="row">
             <% } %>
-
             <div class="col col-sm-12 col-md-6 col-lg-4">
                 <div class="card mt-2" style="width: 18rem; box-shadow: 5px 2px 8px #474646;">
                     <img src="/<%= products[i].imgPath %>" height="220px" class="card-img-top" alt="Image not loaded">
@@ -33,8 +32,13 @@
                         <div class="d-flex">
                             <h5 class="card-title"><%= products[i].prodName %></h5>
                             <% if(isUser) { %>
-                                <% if(products[i].liked) { %>
-                                    <a href="/user/mylist/delete/<%= products[i]._id %>" class="ml-auto">
+                                <% if(products[i].liked == true) { %>
+                                    <!-- 
+                                        dot(.) in href link is replaced with forward slash (/)
+                                        to identify the redirect path on server
+                                        (-) is used as seperator for 'id' & 'redirect path'
+                                    -->
+                                    <a href="/user/mylist/delete/<%= products[i]._id %>-." class="ml-auto">
                                         <i class="fa fa-heart" style="font-size:25px;color:red;" aria-hidden="true"></i>
                                     </a> 
                                 <% } else { %>
@@ -46,7 +50,12 @@
                         </div>
                         <p class="card-text"><%= products[i].info %></p>
                         <a href="/details/<%= products[i]._id %>" class="btn btn-outline-warning">View details</a>
-                        <a href="/user/cart/<%= products[i]._id %>" class="btn btn-outline-success">Add to cart</a>
+                        <!-- 
+                            dot(.) in href link is replaced with forward slash (/)
+                            to identify the redirect path on server
+                            (-) is used as seperator for 'id' & 'redirect path'
+                        -->
+                        <a href="/user/cart/<%= products[i]._id %>-." class="btn btn-outline-success">Add to cart</a>
                     </div>
                 </div>
             </div>
