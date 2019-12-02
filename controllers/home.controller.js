@@ -49,26 +49,41 @@ exports.home_page = (req, res) => {
 exports.product_details = (req, res) => {
     let id = req.params.id;
     let isUser = req.user ? true : false;
-    ProductModel.findById(id, (err, result) => {
-        if(err) throw err;
-        
-        // Get like count
-        UserModel.find({email: req.user.email}, (err, user) => {
+    if(isUser) {
+        ProductModel.findById(id, (err, result) => {
             if(err) throw err;
-
-            // Get cart count
-            CartModel.find({email: req.user.email}, (err, cartItems) => {
+            
+            // Get like count
+            UserModel.find({email: req.user.email}, (err, user) => {
                 if(err) throw err;
-
-                // Return item
-                res.render('home/item-details', {
-                    title: 'Product Details',
-                    isUser: isUser,
-                    likeCount: user.likedItems ? user.likedItems.length : 0,
-                    cartCount: cartItems.length,
-                    product: result
+    
+                // Get cart count
+                CartModel.find({email: req.user.email}, (err, cartItems) => {
+                    if(err) throw err;
+    
+                    // Return item
+                    res.render('home/item-details', {
+                        title: 'Product Details',
+                        isUser: isUser,
+                        likeCount: user.likedItems ? user.likedItems.length : 0,
+                        cartCount: cartItems.length,
+                        product: result
+                    });
                 });
             });
         });
-    });
+    } else {
+        ProductModel.findById(id, (err, result) => {
+            if(err) throw err;
+            
+            // Return item
+            res.render('home/item-details', {
+                title: 'Product Details',
+                isUser: isUser,
+                likeCount: 0,
+                cartCount: 0,
+                product: result
+            });
+        });
+    }
 }
