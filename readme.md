@@ -28,15 +28,14 @@ Following are the steps to install and run this application on your local machin
 Download project files and extract it.
 ##### Step 2: Move inside your project
 Open terminal inside projects root folder (i.e. online-music-store)
-##### Step 3: Install required dependencies
-Run the following command
+##### Step 3: Configure Database and Start Application
+Run the following batch file to configure database and start your application (One time process):
 ```
-npm install
+configAndStartApp.bat
 ```
-##### Step 4: Configure Database and Start Application
-Run the following batch file
+Next time to start your application run following batch file:
 ```
-DBConfigAndStartServer.bat
+startApp.bat
 ```
 ##### Step 5: Open in browser
 Open your browser (eg. chrome) and enter below url to run you application
