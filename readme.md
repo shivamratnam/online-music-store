@@ -1,6 +1,6 @@
 # online-music-store
 
-A website to buy musical instruments online.
+A website to purchase musical instruments online.
 
 ## Getting Started
 
@@ -10,8 +10,8 @@ Following are the simplified steps to setup and run this application into your l
 
 You need to have following software installed in order to run this application
 
-* Node.js - [Download](https://nodejs.org/en/download/)
-* MongoDB Server - [Download](https://www.mongodb.com/download-center/community) 
+* Node.js - [Download](https://nodejs.org/en/download/){:target="_blank"}
+* MongoDB Server - [Download](https://www.mongodb.com/download-center/community){:target="_blank"}
 
 ### Setup Environment (Important)
 Set the following in environment variable:
@@ -44,9 +44,10 @@ http://localhost:8080
 ```
 ## Built With
 
-* [Angular](https://angular.io/docs) - The Web Framework
-* [Node.js](https://nodejs.org/en/docs/) - Backend Server
-* [Passportjs](http://www.passportjs.org/docs/downloads/html/) - Used for Authentication 
+* [EJS](https://ejs.co/#docs){:target="_blank"} - Template Engine
+* [Node.js](https://nodejs.org/en/docs/){:target="_blank"} - Backend Server
+* [MongoDB](https://docs.mongodb.com/){:target="_blank"} - NoSQL Database
+* [Passportjs](http://www.passportjs.org/docs/downloads/html/){:target="_blank"} - Used for Authentication 
 
 ## Authors
 
